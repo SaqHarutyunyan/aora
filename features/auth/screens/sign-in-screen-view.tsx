@@ -4,7 +4,7 @@ import React from "react";
 export default function SignInScreenView() {
     return (
         <View>
-            <Text>SignInScreenView</Text>
+            <Text className="text-red-500 font-bold">SignInScreenView</Text>
         </View>
     );
 }
