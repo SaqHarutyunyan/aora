@@ -15,6 +15,9 @@ export default function OnBoardingScreenView() {
             >
                 <Text>Sing in</Text>
             </Pressable>
+            <Pressable onPress={() => router.navigate("/(tabs)/home")}>
+                <Text>Go to home</Text>
+            </Pressable>
         </View>
     );
 }
