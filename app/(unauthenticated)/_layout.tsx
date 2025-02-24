@@ -1,8 +1,10 @@
-import { View, Text } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 export default function AuthLayout() {
+    const { isLoading, isLoggedIn } = useGlobalContext();
+    if (isLoading && !isLoggedIn) return <Redirect href={"/(tabs)/home"} />;
     return (
         <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />

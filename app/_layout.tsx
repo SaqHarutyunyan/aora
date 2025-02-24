@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import "../global.css";
 import "react-native-reanimated";
 import { StatusBar } from "react-native";
+import GlobalProvider from "@/context/GlobalProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,12 +34,15 @@ export default function RootLayout() {
     }
 
     return (
-        <Stack>
-            <Stack.Screen
-                name="(unauthenticated)"
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <GlobalProvider>
+            <Stack>
+                <Stack.Screen
+                    name="(unauthenticated)"
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <StatusBar backgroundColor="#161622" />
+            </Stack>
+        </GlobalProvider>
     );
 }
