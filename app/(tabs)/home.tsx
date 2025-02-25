@@ -1,12 +1,9 @@
 import { View, Text } from "react-native";
 import React from "react";
+import HomeScreen from "@/features/tabs/home";
 
 const Home = () => {
-    return (
-        <View>
-            <Text>Home</Text>
-        </View>
-    );
+    return <HomeScreen />;
 };
 
 export default Home;
