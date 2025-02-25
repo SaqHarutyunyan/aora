@@ -17,6 +17,16 @@ export const config = {
     storageId: "67bc6fab0024a38fb85a",
 };
 
+const {
+    endpoint,
+    platform,
+    projectId,
+    databaseId,
+    userColactionId,
+    videosColactionId,
+    storageId,
+} = config;
+
 const client = new Client();
 
 client
@@ -92,5 +102,30 @@ export const getCurrentUser = async () => {
         return currentUser.documents[0];
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const getAllPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            databaseId,
+            videosColactionId
+        );
+        return posts.documents;
+    } catch (error: any) {
+        throw new Error(error?.message || "Failed to fetch posts");
+    }
+};
+
+export const getLatestPost = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            databaseId,
+            videosColactionId,
+            [Query.orderDesc("$createdAt")]
+        );
+        return posts.documents;
+    } catch (error: any) {
+        throw new Error(error?.message || "Failed to fetch posts");
     }
 };

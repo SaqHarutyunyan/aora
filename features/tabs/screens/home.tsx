@@ -1,30 +1,39 @@
-import { View, Text, FlatList, Image, RefreshControl } from "react-native";
-import React, { useState } from "react";
+import {
+    View,
+    Text,
+    FlatList,
+    Image,
+    RefreshControl,
+    Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants";
-import SearchInput from "../auth/components/SearchInput";
-import Trending from "../auth/components/Trending";
-import EmptyState from "../auth/components/EmptyState";
+import SearchInput from "@/features/auth/components/SearchInput";
+import Trending from "@/features/auth/components/Trending";
+import EmptyState from "@/features/auth/components/EmptyState";
+import { getAllPosts, getLatestPost } from "@/lib/appwrite";
+import useAppwrite from "@/common/hooks/useAppwrite";
+import VideoCard from "../components/videoCard";
 
 const HomeScreen = () => {
+    const { data: posts, refeatch } = useAppwrite(getAllPosts);
+    const { data: latestPost } = useAppwrite(getLatestPost);
+
     const [refreshing, setRefreshing] = useState(false);
+    console.log(posts);
     const onRefresh = async () => {
         setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 2000);
+        await refeatch();
+        setRefreshing(false);
     };
     return (
         <SafeAreaView className="bg-primary h-full">
             <FlatList
-                data={[{ id: 1 }, { id: 2 }, { id: 3 }]}
-                keyExtractor={(item) => item.id.toString()}
+                data={posts}
+                keyExtractor={(item) => item.$id.toString()}
                 renderItem={({ item }) => {
-                    return (
-                        <Text className="text-white  text-3xl font-pregular">
-                            {item.id}
-                        </Text>
-                    );
+                    return <VideoCard video={item} />;
                 }}
                 ListHeaderComponent={() => (
                     <View className="my-6 px-4 space-y-6">
@@ -50,9 +59,7 @@ const HomeScreen = () => {
                             <Text className="text-gray-100 text-lg font-pregular mb-3">
                                 Trending Videos
                             </Text>
-                            <Trending
-                                posts={[{ id: 1 }, { id: 2 }, { id: 3 }]}
-                            />
+                            <Trending posts={latestPost} />
                         </View>
                     </View>
                 )}
